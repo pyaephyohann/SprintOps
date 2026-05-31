@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Users {
+  id        Int        @id @default(autoincrement())
+  name      String
+  email     String     @unique
+  password  String
+  avatarUrl String
+  projects  Projects[]
+  createdAt DateTime
+  updatedAt DateTime   @updatedAt
+  issues    Issues[]
+  comments  Comments[]
+}
+
+model Projects {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  ownerId     Int
+  owner       Users    @relation(fields: [ownerId], references: [id])
+  createdAt   DateTime
+  updatedAt   DateTime @updatedAt
+  issues      Issues[]
+}
+
+model Issues {
+  id           Int        @id @default(autoincrement())
+  title        String
+  description  String
+  status       Status
+  priority     Priority
+  assignedId   Int
+  assignedUser Users      @relation(fields: [assignedId], references: [id])
+  projectId    Int
+  project      Projects   @relation(fields: [projectId], references: [id])
+  createdAt    DateTime
+  updatedAt    DateTime   @updatedAt
+  comments     Comments[]
+}
+
+model Comments {
+  id        Int      @id @default(autoincrement())
+  content   String
+  issueId   Int
+  Issue     Issues   @relation(fields: [issueId], references: [id])
+  authorId  Int
+  Author    Users    @relation(fields: [authorId], references: [id])
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
+}
+
+enum Status {
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  HIGHEST
+}
