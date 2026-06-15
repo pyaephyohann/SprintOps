@@ -13,9 +13,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Task Flow",
+  title: "SprintOps",
   description:
     "A modern Jira-inspired project management platform built to help teams plan, track, and deliver work efficiently through collaborative workflows, issue tracking, and Kanban boards.",
+  icons: "/favicon.png",
 };
 
 export default function RootLayout({
